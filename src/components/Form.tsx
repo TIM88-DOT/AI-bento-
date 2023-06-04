@@ -3,16 +3,15 @@ import { useState } from 'react';
 import { Tool } from '~/server/interfaces/tool';
 
 export default function Form() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Tool>({
     name: '',
     website: '',
     desc: '',
-    image : '',
-    category : null
+    image: '',
+    category: null
+  });
 
-  } satisfies Tool);
-
-  const handleInputChange = (event:any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -20,7 +19,7 @@ export default function Form() {
     }));
   };
 
-  const handleSubmit = (event:any) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(formData); // Log the form data
     // Add your logic to save the form data or perform other actions here
@@ -76,19 +75,20 @@ export default function Form() {
                 </div>
               </div>
             </div>
+
             <div className="sm:col-span-4">
-              <label htmlFor="Image" className="block text-sm font-medium leading-6 text-gray-900">
-               Tool Image
+              <label htmlFor="image" className="block text-sm font-medium leading-6 text-gray-900">
+                Tool Image
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">Tool image</span>
+                  <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">Tool image url</span>
                   <input
                     type="text"
                     name="image"
                     id="image"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="SOMETHINGGPT.xyz"
+                    placeholder="SOMETHINGGPT.xyz/logo.jpeg"
                     value={formData.image}
                     onChange={handleInputChange}
                   />
@@ -96,6 +96,26 @@ export default function Form() {
               </div>
             </div>
 
+            <div className="sm:col-span-3">
+              <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
+                Category
+              </label>
+              <div className="mt-2">
+                <select
+                  id="category"
+                  name="category"
+                  autoComplete="country-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                >
+                  <option>Productivity</option>
+                  <option>Image</option>
+                  <option>Audio</option>
+                  <option>GPT</option>
+                </select>
+              </div>
+            </div>
 
             <div className="col-span-full">
               <label htmlFor="desc" className="block text-sm font-medium leading-6 text-gray-900">
@@ -114,7 +134,6 @@ export default function Form() {
               </div>
               <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the tool.</p>
             </div>
-
           </div>
         </div>
       </div>
