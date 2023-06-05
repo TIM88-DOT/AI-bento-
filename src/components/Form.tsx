@@ -1,22 +1,42 @@
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
-import { Tool } from '~/server/interfaces/tool';
+import { useState } from "react";
+import { Tool } from "~/server/entities/Tool";
 
 export default function Form() {
   const [formData, setFormData] = useState<Tool>({
-    name: '',
-    website: '',
-    desc: '',
-    image: '',
-    category: null
+    name: "",
+    website: "",
+    desc: "",
+    image: "",
+    categories: [],
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value
-    }));
+
+    if (name === "category") {
+      const selectElement = event.target as HTMLSelectElement;
+      const selectedOptions = Array.from(selectElement.options).filter(
+        (option) => option.selected
+      );
+      const selectedCategoryIds = selectedOptions.map((option) => option.value);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        categories: selectedCategoryIds.map((categoryId) => ({
+          toolId: prevFormData.id ?? "",
+          categoryId,
+        })),
+      }));
+      
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -96,28 +116,32 @@ export default function Form() {
               </div>
             </div>
 
-            <div className="sm:col-span-3">
-              <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
-                Category
-              </label>
-              <div className="mt-2">
-                <select
-                  id="category"
-                  name="category"
-                  autoComplete="country-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                >
-                  <option>Productivity</option>
-                  <option>Image</option>
-                  <option>Audio</option>
-                  <option>GPT</option>
-                </select>
-              </div>
-            </div>
+      <div className="sm:col-span-3">
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium leading-6 text-gray-900"
+        >
+          Category
+        </label>
+        <div className="mt-2">
+          <select
+            id="category"
+            name="category"
+            autoComplete="category-name"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            value={formData.categories.map((category) => category.categoryId)}
+            onChange={handleInputChange}
+            multiple
+          >
+            <option value="1">Productivity</option>
+            <option value="2">Image</option>
+            <option value="3">Audio</option>
+            <option value="4">GPT</option>
+          </select>
+        </div>
+      </div>
 
-            <div className="col-span-full">
+      <div className="col-span-full">
               <label htmlFor="desc" className="block text-sm font-medium leading-6 text-gray-900">
                 Description
               </label>
@@ -139,7 +163,10 @@ export default function Form() {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+        <button
+          type="button"
+          className="text-sm font-semibold leading-6 text-gray-900"
+        >
           Cancel
         </button>
         <button

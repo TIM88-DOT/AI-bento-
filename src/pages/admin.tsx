@@ -10,6 +10,10 @@ import Form from "~/components/Form";
 const Admin: NextPage = () => {
   const { data: sessionData } = useSession();
 
+  const { data: allCategories }  = api.tools.getAllCategories.useQuery(undefined);
+
+  console.log("all categories", allCategories);
+  
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }

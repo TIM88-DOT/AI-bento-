@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String   @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -21,7 +21,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -35,20 +35,20 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String           @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?          @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  isAdmin       Boolean @default(false)
+  isAdmin       Boolean          @default(false)
 }
 
 model Category {
-  id    String  @id @default(cuid())
-  name  String? @unique
-  tools Tool[]  @relation("CategoryToTool")
+  id      String  @id @default(cuid())
+  name    String? @unique
+  tools   Tool[]  @relation("CategoryToTool")
 }
 
 model Tool {
@@ -59,8 +59,9 @@ model Tool {
   image     String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  category  Category[] @relation("CategoryToTool")
+  categories Category[] @relation("CategoryToTool")
 }
+
 
 model VerificationToken {
   identifier String

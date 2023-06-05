@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { adminProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const toolsRouter = createTRPCRouter({
     addNewTool: adminProcedure
@@ -30,7 +30,7 @@ export const toolsRouter = createTRPCRouter({
             return newTool;
         }),
 
-    getAllTools: publicProcedure.query(({ ctx }) => {
-        return ctx.prisma.tool.findMany();
+    getAllCategories: publicProcedure.query(({ ctx }) => {
+        return ctx.prisma.category.findMany();
     }),
 });
