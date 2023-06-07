@@ -1,6 +1,6 @@
 import { ToolCategory } from "./ToolCategory";
 
-export interface Tool {
+export type Tool = {
       id?: string;
       name: string;
       website: string;

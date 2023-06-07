@@ -1,32 +1,19 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
-import NavBar from "~/components/Navbar";
 import Form from "~/components/Form";
 
 const Admin: NextPage = () => {
   const { data: sessionData } = useSession();
 
-  const { data: allCategories }  = api.tools.getAllCategories.useQuery(undefined);
-
-  console.log("all categories", allCategories);
-  
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
+  const { data: allCategories } =
+    api.tools.getAllCategories.useQuery(undefined);
 
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center bg-white/80">
         <div className="flex flex-col items-center justify-center gap-4">
-          <p className="text-center text-2xl text-black">
-            {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-            {secretMessage && <span> - {secretMessage}</span>}
-          </p>
           <button
             className="rounded-full bg-black/5 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
             onClick={sessionData ? () => void signOut() : () => void signIn()}
@@ -34,35 +21,18 @@ const Admin: NextPage = () => {
             {sessionData ? "Sign out" : "Sign in"}
           </button>
         </div>
-
-        <Form />
+        {sessionData && (
+          <>
+            <p className="text-center text-2xl text-black">
+              <span>Logged in as {sessionData.user?.name}</span>
+            </p>
+            <Form allCategories={allCategories}/>
+          </>
+        )}
       </main>
     </>
   );
 };
 
-// const AuthShowcase: React.FC = () => {
-//   const { data: sessionData } = useSession();
-
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// };
 
 export default Admin;

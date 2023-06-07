@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { adminProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { Tool } from "~/server/entities/Tool";
 
 export const toolsRouter = createTRPCRouter({
     addNewTool: adminProcedure
@@ -9,7 +10,12 @@ export const toolsRouter = createTRPCRouter({
                 desc: z.string(),
                 website: z.string(),
                 image: z.string(),
-                category: z.string(),
+                categories: z.array(
+                    z.object({
+                        toolId: z.string(),
+                        categoryId: z.string(),
+                    })
+                ),
             })
         )
         .mutation(async ({ ctx, input }) => {
@@ -19,13 +25,12 @@ export const toolsRouter = createTRPCRouter({
                     desc: input.desc,
                     website: input.website,
                     image: input.image,
-                    category: {
-                        connectOrCreate: {
-                            where: { name: input.category },
-                            create: { name: input.category },
-                        },
-                    },
-                },
+                    categories: {
+                        connect: input.categories.map(category => ({
+                            id: category.categoryId
+                        }))
+                    }
+                }
             });
             return newTool;
         }),
