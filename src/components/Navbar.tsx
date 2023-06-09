@@ -58,7 +58,7 @@ export default function NavBar() {
                         )}
                         aria-current={undefined}
                       >
-                        AI 🦪
+                        AI Bento 🍱
                       </a>
                   </div>
                 </div>

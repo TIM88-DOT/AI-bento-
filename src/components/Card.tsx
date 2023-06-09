@@ -3,7 +3,7 @@ import { Tool } from "@prisma/client";
 export default function Card({ data }: { data: Tool }) {
   return (
     <div className="max-w-xs rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
-      <a href="#">
+      <a href={data.website ?? "#"} rel="noopener noreferrer" target="_blank">
         <img className="rounded-t-lg" src={data.image ?? ""} alt={data.name ?? 'Ai tool'}/>
       </a>
       <div className="p-5">
@@ -17,6 +17,7 @@ export default function Card({ data }: { data: Tool }) {
         </p>
         <a
           href={data.website ?? "#"}
+          target="_blank"
           className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Visit
