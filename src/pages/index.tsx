@@ -31,16 +31,24 @@ const Home: NextPage = () => {
             your place for the best AI tools
           </h4>
         </div>
-        {allCategories &&
-          allCategories.map((category) => <Categories setToolsByCategory={setToolsByCategory} data={category} />)}
+        {allCategories && (
+          <div className="mx-auto my-4 grid w-[85%] grid-cols-6 gap-40">
+            {allCategories.map((category) => (
+              <Categories
+                setToolsByCategory={setToolsByCategory}
+                data={category}
+              />
+            ))}
+          </div>
+        )}
         {toolsByCategory ? (
-          <div className="container flex flex-col items-center justify-center gap-12 px-4 ">
+          <div className="container flex items-center justify-center gap-12 px-4 ">
             {toolsByCategory.map((tool) => (
               <Card data={tool} />
             ))}
           </div>
         ) : (
-          <div className="container flex flex-col items-center justify-center gap-12 px-4 ">
+          <div className="container flex items-center justify-center gap-12 px-4 ">
             {allTools && allTools.map((tool) => <Card data={tool} />)}
           </div>
         )}
