@@ -8,7 +8,7 @@ const Admin: NextPage = () => {
   const { data: sessionData } = useSession();
 
   const { data: allCategories } =
-    api.tools.getAllCategories.useQuery(undefined);
+    api.categories.getAllCategories.useQuery(undefined);
 
   return (
     <>

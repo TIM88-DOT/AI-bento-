@@ -37,4 +37,17 @@ export const toolsRouter = createTRPCRouter({
     getAllTools: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.tool.findMany();
     }),
+
+    getToolsByCategory: publicProcedure.input(z.object({ categoryName: z.string() })).query(({ ctx, input }) => {
+        return ctx.prisma.tool.findMany({
+            where: {
+                categories: {
+                    some: {
+                      name: input.categoryName
+                    }
+                  }
+            }
+          });
+      
+    }),
 });

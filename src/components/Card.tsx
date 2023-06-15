@@ -2,13 +2,13 @@ import { Tool } from "@prisma/client";
 
 export default function Card({ data }: { data: Tool }) {
   return (
-    <div className="max-w-xs rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+    <div className="w-80 max-h-[500px] rounded-lg mt-5 mb-14 border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
       <a href={data.website ?? "#"} rel="noopener noreferrer" target="_blank">
-        <img className="rounded-t-lg" src={data.image ?? ""} alt={data.name ?? 'Ai tool'}/>
+        <img className="rounded-t-lg max-h-72 w-[100%]" src={data.image ?? ""} alt={data.name ?? 'Ai tool'}/>
       </a>
-      <div className="p-5">
-        <a href="#">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <div className="p-4">
+        <a href={data.website ?? "#"}>
+          <h5 className="mb-1 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
             {data.name}
           </h5>
         </a>
