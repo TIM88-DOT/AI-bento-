@@ -22,8 +22,8 @@ const Home: NextPage = () => {
   }, [toolsByCategory]);
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center  bg-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+      <main className="flex min-h-screen flex-col items-center bg-white">
+        <div className="container flex flex-col items-center justify-center gap-12 px-4 pt-16 pb-8">
           <h1 className="text-2xl font-extrabold tracking-tight text-gray-700 sm:text-[4rem]">
             Welcome to <span className="text-orange-600">AI</span> 🍱
           </h1>
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           </h4>
         </div>
         {allCategories && (
-          <div className="mx-auto my-4 grid w-[85%] grid-cols-6 gap-40">
+          <div className="mx-auto my-4 grid w-[50%] grid-cols-4 gap-10">
             {allCategories.map((category) => (
               <Categories
                 setToolsByCategory={setToolsByCategory}

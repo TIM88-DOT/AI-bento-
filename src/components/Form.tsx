@@ -1,6 +1,5 @@
+import { Category } from "@prisma/client";
 import { useState } from "react";
-import { Category } from "~/server/entities/Category";
-import { Tool } from "~/server/entities/Tool";
 import { api } from "~/utils/api";
 
 export default function Form({
@@ -8,12 +7,12 @@ export default function Form({
 }: {
   allCategories: Category[] | undefined;
 }) {
-  const [formData, setFormData] = useState<Tool>({
+  const [formData, setFormData] = useState({
     name: "",
     website: "",
     desc: "",
     image: "",
-    categories: [],
+    categories: [{toolId: "" , categoryId: ""}]
   });
 
   const addMutation = api.tools.addNewTool.useMutation();
@@ -38,7 +37,7 @@ export default function Form({
       setFormData((prevFormData) => ({
         ...prevFormData,
         categories: selectedCategoryIds.map((categoryId) => ({
-          toolId: prevFormData.id ?? "",
+          toolId: "",
           categoryId,
         })),
       }));
