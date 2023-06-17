@@ -1,6 +1,8 @@
-import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { api } from "~/utils/api";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { Tool } from "@prisma/client";
 
 const navigation = [
   { name: "About", href: "#", current: false },
@@ -11,7 +13,23 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavBar() {
+export default function NavBar({
+  setToolsByQuery,
+}: {
+  setToolsByQuery: Dispatch<SetStateAction<Tool[] | undefined>>;
+}) {
+  const [query, setQuery] = useState("");
+
+  const { data: queriedTools } = api.tools.queryTools.useQuery({
+    query,
+  });
+
+  useEffect(() => {
+    if (queriedTools) {
+      setToolsByQuery(queriedTools);
+    }
+  }, [queriedTools]);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -89,7 +107,8 @@ export default function NavBar() {
                       type="text"
                       id="simple-search"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Search"
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search by name, description, or category"
                       required
                     />
                   </div>

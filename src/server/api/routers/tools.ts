@@ -43,11 +43,18 @@ export const toolsRouter = createTRPCRouter({
             where: {
                 categories: {
                     some: {
-                      name: input.categoryName
+                        name: input.categoryName
                     }
-                  }
+                }
             }
-          });
-      
+        });
+
+    }),
+
+    queryTools: publicProcedure.input(z.object({ query: z.string() })).query(({ ctx, input }) => {
+        return ctx.prisma.tool.findMany({
+            where: { search: { contains: input.query.toLowerCase() } },
+        });
+
     }),
 });

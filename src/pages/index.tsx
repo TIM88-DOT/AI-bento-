@@ -4,24 +4,26 @@ import Categories from "~/components/Categories";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { Tool } from "@prisma/client";
+import NavBar from "~/components/Navbar";
 
 const Home: NextPage = () => {
   const { data: allTools } = api.tools.getAllTools.useQuery();
 
-  const [toolsByCategory, setToolsByCategory] = useState<Tool[] | undefined>(
+  const [displayedTools, setDisplayedTools] = useState<Tool[] | undefined>(
     undefined
   );
 
   const { data: allCategories } = api.categories.getAllCategories.useQuery();
-  console.log("all categories", allCategories);
 
   useEffect(() => {
-    if (toolsByCategory) {
-      setToolsByCategory(toolsByCategory);
+    if (displayedTools) {
+      setDisplayedTools(displayedTools);
     }
-  }, [toolsByCategory]);
+  }, [displayedTools]);
+
   return (
     <>
+      <NavBar setToolsByQuery={setDisplayedTools}  />
       <main className="flex min-h-screen flex-col items-center bg-white">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 pt-16 pb-8">
           <h1 className="text-2xl font-extrabold tracking-tight text-gray-700 sm:text-[4rem]">
@@ -35,15 +37,15 @@ const Home: NextPage = () => {
           <div className="mx-auto my-4 grid w-[50%] grid-cols-4 gap-10">
             {allCategories.map((category) => (
               <Categories
-                setToolsByCategory={setToolsByCategory}
+                setToolsByCategory={setDisplayedTools}
                 data={category}
               />
             ))}
           </div>
         )}
-        {toolsByCategory ? (
+        {displayedTools ? (
           <div className="container flex items-center justify-center gap-12 px-4 ">
-            {toolsByCategory.map((tool) => (
+            {displayedTools.map((tool) => (
               <Card data={tool} />
             ))}
           </div>
